@@ -7,57 +7,61 @@ namespace Soul.PlayableAPI
     public class AnimationMixerManager : MonoBehaviour
     {
 
-        PlayableGraph mPlayableGraphInst;
-        public PlayableGraph PlayableGraphInst => mPlayableGraphInst;
-
+        PlayableGraph mPGInst;
+        public PlayableGraph PGInst => mPGInst;
+        
+        //Output
+        AnimationPlayableOutput mOutputInst;
+        
+        //Layer mixer
+        AnimationLayerMixerPlayable mRootLayerMixerInst;
+        
+        //mixer
+        AnimationMixerPlayable mMixerInst;
+        
         Animator mAnimatorInst;
-
-        AnimationLayerMixerPlayable mRootAnimLayerMixerPlayableInst;
-
-        AnimationPlayableOutput mAnimPlayableOutPutInst;
-
-        AnimationMixerPlayable mAnimMixerPlayableInst;
         
         void Awake()
         {
             mAnimatorInst = gameObject.GetComponentInChildren<Animator>();
             
             //创建PlayableGraph - 管理多个Playable的结构
-            mPlayableGraphInst = PlayableGraph.Create(gameObject.name + "AnimMixerManager");
+            mPGInst = PlayableGraph.Create(gameObject.name + "AnimMixerManager");
 
             //创建AnimationOutPut
-            mAnimPlayableOutPutInst = AnimationPlayableOutput.Create(mPlayableGraphInst, "AnimatioinOutPut", mAnimatorInst);
+            mOutputInst = AnimationPlayableOutput.Create(mPGInst, "AnimatioinOutPut", mAnimatorInst);
             
             //创建AnimationLayerMixerPlayable
-            mRootAnimLayerMixerPlayableInst = AnimationLayerMixerPlayable.Create(mPlayableGraphInst, 0);
+            mRootLayerMixerInst = AnimationLayerMixerPlayable.Create(mPGInst, 0);
             
-            //将mRootAnimLayerMixerPlayableInst连接在mAnimPlayableOutPutInst后面
-            mAnimPlayableOutPutInst.SetSourcePlayable(mRootAnimLayerMixerPlayableInst, 0);
+            //将mRootLayerMixerInst连接在mOutputInst后面
+            mOutputInst.SetSourcePlayable(mRootLayerMixerInst, 0);
             
             //设置右侧的输入数量
-            mRootAnimLayerMixerPlayableInst.SetInputCount(1);
+            mRootLayerMixerInst.SetInputCount(1);
             
-            mPlayableGraphInst.Stop();
+            //mPGInst.Stop();
             
             //创建AnimationMixerPlayable,并且设置右侧输入数量
-            mAnimMixerPlayableInst = AnimationMixerPlayable.Create(mPlayableGraphInst, 1);
+            mMixerInst = AnimationMixerPlayable.Create(mPGInst, 1);
 
             
-            mAnimMixerPlayableInst.SetInputWeight(0, 1f);
+            mMixerInst.SetInputWeight(0, 1f);
             
-            //将mAnimMixerPlayableInst连接到mRootAnimLayerMixerPlayableInst后面
-            mPlayableGraphInst.Connect(mAnimMixerPlayableInst, 0, mRootAnimLayerMixerPlayableInst, 0);
+            //将mMixerInst连接到mRootLayerMixerInst后面
+            mPGInst.Connect(mMixerInst, 0, mRootLayerMixerInst, 0);
         }
 
         void Update()
         {
             var deltaTime = Time.deltaTime;
-            mPlayableGraphInst.Evaluate(deltaTime);
+            mPGInst.Evaluate(deltaTime);
         }
         
         public void AddStaticPlayable(Playable input)
         {
-            mPlayableGraphInst.Connect(input, 0, mAnimMixerPlayableInst, 0);
+            
+            mPGInst.Connect(input, 0, mMixerInst, 0);
         }
         
     }

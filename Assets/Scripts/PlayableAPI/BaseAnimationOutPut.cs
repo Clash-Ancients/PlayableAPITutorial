@@ -11,6 +11,7 @@ namespace Soul.PlayableAPI
         protected AnimationMixerManager mMixerMgrInst;
         
         protected abstract Playable mPlayerInput { get; }
+        
         [SerializeField]
         protected bool IsStatic = false;
         
@@ -22,6 +23,7 @@ namespace Soul.PlayableAPI
             {
                 //创建clip
                 CreatePlayables();
+                
                 mMixerMgrInst.AddStaticPlayable(mPlayerInput);
             }
         }

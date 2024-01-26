@@ -14,9 +14,10 @@ namespace Soul.PlayableAPI
         {
             get => mClipPlayableInst;
         }
+        
         protected override void CreatePlayables()
         {
-            mClipPlayableInst = AnimationClipPlayable.Create(mMixerMgrInst.PlayableGraphInst, mClipInst);
+            mClipPlayableInst = AnimationClipPlayable.Create(mMixerMgrInst.PGInst, mClipInst);
             mClipPlayableInst.SetTime(0f);
         }
     }
