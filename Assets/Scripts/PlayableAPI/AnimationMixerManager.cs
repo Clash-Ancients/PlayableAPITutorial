@@ -110,7 +110,7 @@ namespace Soul.PlayableAPI
                 var p = mListRuntimeData[i];
 
                 if (p.Id != mCurPlayableId && 
-                    p.Weight < 0.001f &&
+                    p.SmoothWeight < 0.001f &&
                     mDicRuntimeData[mCurPlayableId].SmoothWeight > 0.99f
                     )
                 {
