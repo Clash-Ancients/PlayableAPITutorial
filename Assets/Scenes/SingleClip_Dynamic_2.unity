@@ -821,8 +821,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b41362e6e06b3406ca21bb4dee38ec64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  IsStatic: 1
+  IsStatic: 0
   mClipInst: {fileID: 7400000, guid: 1e79f5e733df84044a45d6ab05035627, type: 3}
+  LayerIndex: 0
 --- !u!114 &2135825567
 MonoBehaviour:
   m_ObjectHideFlags: 0

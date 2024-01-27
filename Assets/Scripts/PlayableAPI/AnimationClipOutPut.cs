@@ -9,7 +9,9 @@ namespace Soul.PlayableAPI
 
         public AnimationClip mClipInst;
         AnimationClipPlayable mClipPlayableInst;
-
+        
+        public int LayerIndex = 0;
+        
         protected override Playable mPlayerInput
         {
             get => mClipPlayableInst;
@@ -23,7 +25,11 @@ namespace Soul.PlayableAPI
 
         public void OnBtnClickPlay()
         {
-            
+            if (!IsStatic)
+            {
+                CreatePlayables();
+                mMixerMgrInst.PlayDynamicPlayable(mPlayerInput, LayerIndex);
+            }
         }
     }
 }
