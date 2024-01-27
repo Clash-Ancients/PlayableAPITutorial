@@ -104,7 +104,7 @@ namespace Soul.PlayableAPI
                     p.Weight = Mathf.Clamp(p.Weight, 0, p.TargetWeight);
                     p.SmoothWeight = Mathf.Lerp(p.SmoothWeight, p.Weight, 1f - Mathf.Exp(-25f*dt));
                 }
-                else if (p.Id == mLastPlayableId)
+                else //if (p.Id == mLastPlayableId)
                 {
                     p.Weight -= diffThisFrame;
                     p.Weight = Mathf.Clamp(p.Weight, 0, p.TargetWeight);
@@ -153,6 +153,18 @@ namespace Soul.PlayableAPI
             }
             
         }
+
+        public void DestroyAnimClipPlayable(ref PlayableGraph _graph)
+        {
+            while (mListRuntimeData.Count > 0)
+            {
+                var item = mListRuntimeData[0];
+                mListRuntimeData.Remove(item);
+                mDicRuntimeData.Remove(item.Id);
+                _graph.Disconnect(mRootMixer, item.PortIndex);
+                _graph.DestroyPlayable(item.PlayableInst);
+            }
+        }
     }
     
     public class AnimationMixerManager : MonoBehaviour
@@ -188,13 +200,13 @@ namespace Soul.PlayableAPI
             mOutputInst = AnimationPlayableOutput.Create(mPGInst, "AnimatioinOutPut", mAnimatorInst);
             
             //创建AnimationLayerMixerPlayable
-            mRootLayerMixerInst = AnimationLayerMixerPlayable.Create(mPGInst, 0);
+            mRootLayerMixerInst = AnimationLayerMixerPlayable.Create(mPGInst, 1);
             
             //将mRootLayerMixerInst连接在mOutputInst后面
             mOutputInst.SetSourcePlayable(mRootLayerMixerInst, 0);
             
             //设置右侧的输入数量
-            mRootLayerMixerInst.SetInputCount(1);
+            //mRootLayerMixerInst.SetInputCount(1);
             
             //mPGInst.Stop();
             
@@ -222,13 +234,12 @@ namespace Soul.PlayableAPI
         {
             var deltaTime = Time.deltaTime;
             
-            
             foreach (var VARIABLE in mListLayerPlablesCtrl)
             {
                 //动画如果有更新，那么需要更新weight
                 VARIABLE.Evaluate(deltaTime);
             }
-
+            
             if (UseCustomFrameRate)
             {
                 var delTa = Time.time - mLastFrameTime;
@@ -254,7 +265,18 @@ namespace Soul.PlayableAPI
                 VARIABLE.LateUpdate(ref mPGInst);
             }
         }
-        
+
+        void OnDestroy()
+        {
+
+            foreach (var VARIABLE in mListLayerPlablesCtrl)
+            {
+                var ctrl = VARIABLE;
+
+                ctrl.DestroyAnimClipPlayable(ref mPGInst);
+            }
+        }
+
         public void AddStaticPlayable(Playable input)
         {
             
