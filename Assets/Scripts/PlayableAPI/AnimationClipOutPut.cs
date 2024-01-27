@@ -20,6 +20,10 @@ namespace Soul.PlayableAPI
             mClipPlayableInst = AnimationClipPlayable.Create(mMixerMgrInst.PGInst, mClipInst);
             mClipPlayableInst.SetTime(0f);
         }
-    }
 
+        public void OnBtnClickPlay()
+        {
+            
+        }
+    }
 }

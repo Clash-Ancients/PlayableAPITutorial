@@ -44,7 +44,6 @@ namespace Soul.PlayableAPI
             
             //创建AnimationMixerPlayable,并且设置右侧输入数量
             mMixerInst = AnimationMixerPlayable.Create(mPGInst, 1);
-
             
             mMixerInst.SetInputWeight(0, 1f);
             
