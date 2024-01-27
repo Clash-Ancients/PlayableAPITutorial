@@ -10,6 +10,9 @@ namespace Soul.PlayableAPI
 
         protected AnimationMixerManager mMixerMgrInst;
         
+        [SerializeField]
+        protected ClipTransition ClipTransition;
+        
         protected abstract Playable mPlayerInput { get; }
         
         [SerializeField]

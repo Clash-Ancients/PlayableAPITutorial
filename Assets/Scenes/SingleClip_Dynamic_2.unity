@@ -395,7 +395,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 935157975}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 1, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -821,6 +821,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b41362e6e06b3406ca21bb4dee38ec64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ClipTransition:
+    StartTime: 0
+    TargetWeight: 1
+    FadeDuration: 0.2
+    ClipSpeed: 1
   IsStatic: 0
   mClipInst: {fileID: 7400000, guid: 1e79f5e733df84044a45d6ab05035627, type: 3}
   LayerIndex: 0

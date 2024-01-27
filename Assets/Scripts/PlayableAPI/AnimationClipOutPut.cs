@@ -28,7 +28,7 @@ namespace Soul.PlayableAPI
             if (!IsStatic)
             {
                 CreatePlayables();
-                mMixerMgrInst.PlayDynamicPlayable(mPlayerInput, LayerIndex);
+                mMixerMgrInst.PlayDynamicPlayable(mPlayerInput, ClipTransition, LayerIndex);
             }
         }
     }

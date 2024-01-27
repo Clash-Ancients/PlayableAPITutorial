@@ -6,6 +6,16 @@ using UnityEngine.Playables;
 
 namespace Soul.PlayableAPI
 {
+
+    [System.Serializable]
+    public struct ClipTransition
+    {
+        public float StartTime;
+        public float TargetWeight;
+        public float FadeDuration;
+        public float ClipSpeed;
+    }
+    
     public struct RuntimeData
     {
         public int Id;
@@ -14,6 +24,9 @@ namespace Soul.PlayableAPI
         public float SmoothWeight;
         public float FadeDuration;
         public Playable PlayableInst;
+        public float StartTime;
+        public float TargetWeight;
+        public float ClipSpeed;
     }
 
     public class LayeredPlayablesController
@@ -29,7 +42,7 @@ namespace Soul.PlayableAPI
             mRootMixer = _root;
         }
         
-        public void PlayDynamicPlayable(Playable _playable, PlayableGraph _playGraph)
+        public void PlayDynamicPlayable(Playable _playable, ClipTransition _animTrans, PlayableGraph _playGraph)
         {
             int portIndex = mRecycleIndex.Count > 0 ? mRecycleIndex.Dequeue() : mListRuntimeData.Count;
             
@@ -43,15 +56,18 @@ namespace Soul.PlayableAPI
             {
                 Id = id,
                 PortIndex = portIndex,
-                FadeDuration = 0.3f,
                 Weight = 0f,
                 SmoothWeight = 0f,
                 PlayableInst = _playable,
+                StartTime = _animTrans.StartTime,
+                FadeDuration = _animTrans.FadeDuration,
+                TargetWeight = _animTrans.TargetWeight,
+                ClipSpeed = _animTrans.ClipSpeed,
             };
             
             mRootMixer.SetInputWeight(portIndex, 0);
             
-            _playable.SetTime(0f);
+            _playable.SetTime(_animTrans.StartTime);
             
             _playGraph.Connect(_playable, 0, mRootMixer, portIndex);
 
@@ -85,13 +101,13 @@ namespace Soul.PlayableAPI
                 if (p.Id == mCurPlayableId)
                 {
                     p.Weight += diffThisFrame;
-                    p.Weight = Mathf.Clamp(p.Weight, 0, 1f);
+                    p.Weight = Mathf.Clamp(p.Weight, 0, p.TargetWeight);
                     p.SmoothWeight = Mathf.Lerp(p.SmoothWeight, p.Weight, 1f - Mathf.Exp(-25f*dt));
                 }
                 else if (p.Id == mLastPlayableId)
                 {
                     p.Weight -= diffThisFrame;
-                    p.Weight = Mathf.Clamp(p.Weight, 0, 1f);
+                    p.Weight = Mathf.Clamp(p.Weight, 0, p.TargetWeight);
                     p.SmoothWeight = Mathf.Lerp(p.SmoothWeight, p.Weight, 1f - Mathf.Exp(-25f*dt));
                 }
 
@@ -157,7 +173,10 @@ namespace Soul.PlayableAPI
         Animator mAnimatorInst;
 
         List<LayeredPlayablesController> mListLayerPlablesCtrl = new List<LayeredPlayablesController>();
-        
+
+        public bool UseCustomFrameRate = false;
+        public float CustomFrameRate = 30;
+        float mLastFrameTime = 0f;
         void Awake()
         {
             mAnimatorInst = gameObject.GetComponentInChildren<Animator>();
@@ -194,37 +213,57 @@ namespace Soul.PlayableAPI
             mListLayerPlablesCtrl.Add(ctrl);
         }
 
+        void Start()
+        {
+            mLastFrameTime = Time.time;
+        }
+
         void Update()
         {
             var deltaTime = Time.deltaTime;
             
+            
             foreach (var VARIABLE in mListLayerPlablesCtrl)
             {
+                //动画如果有更新，那么需要更新weight
                 VARIABLE.Evaluate(deltaTime);
             }
-            
-            mPGInst.Evaluate(deltaTime);
+
+            if (UseCustomFrameRate)
+            {
+                var delTa = Time.time - mLastFrameTime;
+                
+                if (delTa >= (1f / CustomFrameRate))
+                {
+                    mPGInst.Evaluate(delTa);
+                    mLastFrameTime = Time.time;
+                }
+            }
+            else
+            {
+                mPGInst.Evaluate(deltaTime);
+            }
+           
         }
 
         void LateUpdate()
         {
             foreach (var VARIABLE in mListLayerPlablesCtrl)
             {
+                //移除播放完毕的动画
                 VARIABLE.LateUpdate(ref mPGInst);
             }
         }
-
-
-
+        
         public void AddStaticPlayable(Playable input)
         {
             
             mPGInst.Connect(input, 0, mMixerInst, 0);
         }
 
-        public void PlayDynamicPlayable(Playable _playable, int _layerIndex)
+        public void PlayDynamicPlayable(Playable _playable, ClipTransition _animTrans, int _layerIndex)
         {
-            mListLayerPlablesCtrl[_layerIndex].PlayDynamicPlayable(_playable, mPGInst);
+            mListLayerPlablesCtrl[_layerIndex].PlayDynamicPlayable(_playable, _animTrans, mPGInst);
         }
         
     }
