@@ -7,7 +7,7 @@ namespace Soul.PlayableAPI
     public class AnimationClipOutPut  : BaseAnimationOutPut
     {
 
-        public AnimationClip mClipInst;
+        public AnimationClip toClipInst;
         AnimationClipPlayable mClipPlayableInst;
         
         public int LayerIndex;
@@ -19,12 +19,21 @@ namespace Soul.PlayableAPI
         
         protected override void CreatePlayables()
         {
-            mClipPlayableInst = AnimationClipPlayable.Create(mMixerMgrInst.PGInst, mClipInst);
+            mClipPlayableInst = AnimationClipPlayable.Create(mMixerMgrInst.PGInst, toClipInst);
             mClipPlayableInst.SetTime(0f);
         }
 
         public void OnBtnClickPlay()
         {
+            if (!IsStatic)
+            {
+                CreatePlayables();
+                mMixerMgrInst.PlayDynamicPlayable(mPlayerInput, ClipTransition, LayerIndex);
+            }
+        }
+
+        public void Play()
+        {   
             if (!IsStatic)
             {
                 CreatePlayables();
