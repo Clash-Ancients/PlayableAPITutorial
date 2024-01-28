@@ -7,7 +7,8 @@ using UnityEngine.Playables;
 namespace Soul.PlayableAPI
 {
 
-    [System.Serializable]
+    //动画融合期数据
+    [Serializable]
     public struct ClipTransition
     {
         public float StartTime;
@@ -16,6 +17,9 @@ namespace Soul.PlayableAPI
         public float ClipSpeed;
     }
     
+    /// <summary>
+    /// 运行时动画数据
+    /// </summary>
     public struct RuntimeData
     {
         public int Id;
@@ -29,12 +33,13 @@ namespace Soul.PlayableAPI
         public float ClipSpeed;
     }
 
+    //同层playable管理器
     public class LayeredPlayablesController
     {
         AnimationMixerPlayable mRootMixer;
-        Queue<int> mRecycleIndex = new Queue<int>();
-        List<RuntimeData> mListRuntimeData = new List<RuntimeData>();
-        Dictionary<int, RuntimeData> mDicRuntimeData = new Dictionary<int, RuntimeData>();
+        readonly Queue<int> mRecycleIndex = new Queue<int>();
+        readonly List<RuntimeData> mListRuntimeData = new List<RuntimeData>();
+        readonly Dictionary<int, RuntimeData> mDicRuntimeData = new Dictionary<int, RuntimeData>();
         int mCurPlayableId = -1;
         int mLastPlayableId = -1;
         public void OnSetRootMixer(AnimationMixerPlayable _root)
@@ -186,9 +191,10 @@ namespace Soul.PlayableAPI
 
         List<LayeredPlayablesController> mListLayerPlablesCtrl = new List<LayeredPlayablesController>();
 
-        public bool UseCustomFrameRate = false;
+        public bool UseCustomFrameRate;
         public float CustomFrameRate = 30;
-        float mLastFrameTime = 0f;
+        float mLastFrameTime;
+        
         void Awake()
         {
             mAnimatorInst = gameObject.GetComponentInChildren<Animator>();
@@ -268,7 +274,6 @@ namespace Soul.PlayableAPI
 
         void OnDestroy()
         {
-
             foreach (var VARIABLE in mListLayerPlablesCtrl)
             {
                 var ctrl = VARIABLE;

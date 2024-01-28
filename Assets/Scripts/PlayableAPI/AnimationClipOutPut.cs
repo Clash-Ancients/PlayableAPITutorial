@@ -10,7 +10,7 @@ namespace Soul.PlayableAPI
         public AnimationClip mClipInst;
         AnimationClipPlayable mClipPlayableInst;
         
-        public int LayerIndex = 0;
+        public int LayerIndex;
         
         protected override Playable mPlayerInput
         {
