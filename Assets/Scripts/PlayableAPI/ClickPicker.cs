@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Soul.PlayableAPI
+namespace Test.PlayableAPI
 {
     public class ClickPicker : MonoBehaviour
     {

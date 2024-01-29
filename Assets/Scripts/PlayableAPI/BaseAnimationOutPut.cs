@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Playables;
 
-namespace Soul.PlayableAPI
+namespace Test.PlayableAPI
 {
     
     [RequireComponent(typeof(AnimationMixerManager))]

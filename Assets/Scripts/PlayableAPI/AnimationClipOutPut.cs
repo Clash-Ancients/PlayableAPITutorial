@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 
-namespace Soul.PlayableAPI
+namespace Test.PlayableAPI
 {
     public class AnimationClipOutPut  : BaseAnimationOutPut
     {

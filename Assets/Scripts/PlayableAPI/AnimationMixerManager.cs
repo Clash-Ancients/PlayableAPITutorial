@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 
-namespace Soul.PlayableAPI
+namespace Test.PlayableAPI
 {
 
     //动画融合期数据
@@ -45,6 +45,7 @@ namespace Soul.PlayableAPI
         public void OnSetRootMixer(AnimationMixerPlayable _root)
         {
             mRootMixer = _root;
+            
         }
         
         public void PlayDynamicPlayable(Playable _playable, ClipTransition _animTrans, PlayableGraph _playGraph)
