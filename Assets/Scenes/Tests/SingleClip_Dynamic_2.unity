@@ -827,7 +827,7 @@ MonoBehaviour:
     FadeDuration: 0.2
     ClipSpeed: 1
   IsStatic: 0
-  mClipInst: {fileID: 7400000, guid: 1e79f5e733df84044a45d6ab05035627, type: 3}
+  toClipInst: {fileID: 7400000, guid: 0147e212f97e3d449a4b9e4f5d057180, type: 3}
   LayerIndex: 0
 --- !u!114 &2135825567
 MonoBehaviour:
@@ -841,3 +841,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771c05dfc1dbe487192d9ec64450dae3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UseCustomFrameRate: 0
+  CustomFrameRate: 30

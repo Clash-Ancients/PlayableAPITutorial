@@ -71,7 +71,7 @@ namespace Test.PlayableAPI
                 ClipSpeed = _animTrans.ClipSpeed,
             };
             
-            mRootMixer.SetInputWeight(portIndex, 0);
+            mRootMixer.SetInputWeight(portIndex, 1);
             
             _playable.SetTime(_animTrans.StartTime);
             
@@ -90,6 +90,7 @@ namespace Test.PlayableAPI
             
             mListRuntimeData.Add(runTimeData);
             mDicRuntimeData.Add(id, runTimeData);
+            _playable.Play();
         }
 
         public void Evaluate(float dt)
@@ -209,6 +210,8 @@ namespace Test.PlayableAPI
             //创建AnimationLayerMixerPlayable
             mRootLayerMixerInst = AnimationLayerMixerPlayable.Create(mPGInst, 1);
             
+            mRootLayerMixerInst.SetInputWeight(0, 1f);
+            
             //将mRootLayerMixerInst连接在mOutputInst后面
             mOutputInst.SetSourcePlayable(mRootLayerMixerInst, 0);
             
@@ -239,28 +242,28 @@ namespace Test.PlayableAPI
 
         void Update()
         {
-            var deltaTime = Time.deltaTime;
-            
-            foreach (var VARIABLE in mListLayerPlablesCtrl)
-            {
-                //动画如果有更新，那么需要更新weight
-                VARIABLE.Evaluate(deltaTime);
-            }
-            
-            if (UseCustomFrameRate)
-            {
-                var delTa = Time.time - mLastFrameTime;
-                
-                if (delTa >= (1f / CustomFrameRate))
-                {
-                    mPGInst.Evaluate(delTa);
-                    mLastFrameTime = Time.time;
-                }
-            }
-            else
-            {
-                mPGInst.Evaluate(deltaTime);
-            }
+            // var deltaTime = Time.deltaTime;
+            //
+            // foreach (var VARIABLE in mListLayerPlablesCtrl)
+            // {
+            //     //动画如果有更新，那么需要更新weight
+            //     VARIABLE.Evaluate(deltaTime);
+            // }
+            //
+            // if (UseCustomFrameRate)
+            // {
+            //     var delTa = Time.time - mLastFrameTime;
+            //     
+            //     if (delTa >= (1f / CustomFrameRate))
+            //     {
+            //         mPGInst.Evaluate(delTa);
+            //         mLastFrameTime = Time.time;
+            //     }
+            // }
+            // else
+            // {
+            //     mPGInst.Evaluate(deltaTime);
+            // }
            
         }
 
