@@ -1,17 +1,19 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Playables;
 
 namespace Soul.PlayableAPI
 {
-    
     //构造AnimancerPlayable
-    public partial class AnimancerPlayable : PlayableBehaviour
+    public partial class AnimancerPlayable : PlayableBehaviour, IAnimationClipCollection
     {
 
         Playable mRootPlayable;
 
         PlayableGraph mGraph;
+        
+        public StateDictionary States { get; private set; }
         
         public static AnimancerPlayable Create()
         {
@@ -35,6 +37,10 @@ namespace Soul.PlayableAPI
             mRootPlayable = playable;
 
             mGraph = playable.GetGraph();
+
+            
+            
+            States = new StateDictionary(this);
             
             playable.SetInputWeight(0, 1);
             
@@ -50,12 +56,19 @@ namespace Soul.PlayableAPI
 
     }
     
-    public partial class AnimancerPlayable : PlayableBehaviour
+    public partial class AnimancerPlayable : PlayableBehaviour, IAnimationClipCollection
     {
+        
+        
+        
         public void Play()
         {
             
         }
+        
+        public void GatherAnimationClips(ICollection<AnimationClip> clips)
+        {
+            
+        }
     }
-
 }
