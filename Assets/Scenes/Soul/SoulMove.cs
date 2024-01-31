@@ -15,7 +15,7 @@ public class SoulMove : MonoBehaviour
     public float MoveSpeed;
     public float RotSpeed;
     public Camera mCamInst;
-    
+    public float transSpeed = 0.8f;
     public void OnInit(SoulPlayer player)
     {
         player.AnimComp.Play(MixerTrans);
