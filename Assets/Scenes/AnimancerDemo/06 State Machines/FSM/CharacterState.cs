@@ -7,6 +7,7 @@ namespace Scenes.AnimDemos
         {
             public StateMachine(CharacterState<T1> t) : base(t)
             {
+               
                 
             }
         }
@@ -16,6 +17,11 @@ namespace Scenes.AnimDemos
         public CharacterState(T1 temple)
         {
             mCharacter = temple;
+        }
+
+        public override void OnUpdate()
+        {
+            
         }
         
     }

@@ -43,9 +43,9 @@ public class SoulMove : MonoBehaviour
         
         //mMoveDir = new Vector3(horizontal, 0, vertical);
 
-        MixerState.Parameter = mMoveDir.magnitude;
-
-        if(mMoveDir != Vector3.zero)
+        MixerState.Parameter = Mathf.Lerp(MixerState.Parameter, mMoveDir.magnitude,  Time.deltaTime) ;
+        
+        if(Mathf.Abs(horizontal) > 0.1f || Mathf.Abs(vertical) > 0.1f )
             transform.forward = Vector3.Lerp(transform.forward, mMoveDir, RotSpeed * Time.deltaTime);
 
     }

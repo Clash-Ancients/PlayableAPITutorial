@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 namespace Scenes.AnimDemos
 {
@@ -10,10 +9,15 @@ namespace Scenes.AnimDemos
             [SerializeField]
             TState _DefaultState;
 
-            protected WithDefault(TState t)
+   
+            
+            protected WithDefault(TState t) : base(t)
             {
                 
             }
+            
+            
+            
         }
     }
 }
